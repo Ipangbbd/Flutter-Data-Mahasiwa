@@ -1,7 +1,10 @@
+// Halaman detail untuk menampilkan data satu mahasiswa
 import 'package:flutter/material.dart';
+// Model Student yang ditampilkan pada halaman ini
 import 'package:flut/models/student.dart';
 
 class FormDetail extends StatefulWidget {
+  // Data mahasiswa yang akan ditampilkan
   final Student student;
 
   FormDetail({required this.student});
@@ -15,6 +18,7 @@ class _FormDetailState extends State<FormDetail>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // Judul halaman detail
         title: const Text('Detail Mahasiswa'),
         centerTitle: true,
       ),
@@ -31,7 +35,10 @@ class _FormDetailState extends State<FormDetail>{
               children: [
                 Row(
                   children: [
-                    CircleAvatar(radius: 28, child: Text(_initials(widget.student.nama))),
+                    Hero(
+                      tag: 'avatar_${widget.student.nim}',
+                      child: CircleAvatar(radius: 28, child: Text(_initials(widget.student.nama))),
+                    ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
@@ -62,6 +69,7 @@ class _FormDetailState extends State<FormDetail>{
     );
   }
 
+  // Utilitas untuk membuat baris label-nilai sederhana
   Widget _row(String label, String value) {
     return Row(
       children: [
@@ -72,6 +80,7 @@ class _FormDetailState extends State<FormDetail>{
     );
   }
 
+  // Menghasilkan inisial dari nama (misal: "Budi Santoso" -> "BS")
   String _initials(String fullName) {
     if (fullName.trim().isEmpty) return '?';
     final parts = fullName.trim().split(RegExp(r"\s+"));

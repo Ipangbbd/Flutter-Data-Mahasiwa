@@ -1,8 +1,12 @@
+// Halaman form untuk menambah/mengedit data mahasiswa
 import 'package:flutter/material.dart';
+// Model Student yang akan dibuat/diedit dari form
 import 'package:flut/models/student.dart';
 
 class BiodataForm extends StatefulWidget {
+  // Data awal untuk mode edit (null jika mode tambah)
   final Student? initial;
+  // Kumpulan NIM yang sudah ada, untuk validasi unik
   final Set<String> existingNims;
 
   BiodataForm({this.initial, this.existingNims = const {}});
@@ -11,15 +15,19 @@ class BiodataForm extends StatefulWidget {
 }
 
 class BiodataForm_State extends State<BiodataForm> {
+  // Kunci global untuk memvalidasi form
   final _formKey = GlobalKey<FormState>();
+  // Controller input teks
   final _nimController = TextEditingController();
   final _namaController = TextEditingController();
   final _jurusanController = TextEditingController();
+  // Nilai gender yang dipilih
   Gender _selectedGender = Gender.male;
 
   @override
   void initState() {
     super.initState();
+    // Saat mode edit, muat nilai awal ke controller dan gender
     final initial = widget.initial;
     if (initial != null) {
       _namaController.text = initial.nama;
@@ -31,6 +39,7 @@ class BiodataForm_State extends State<BiodataForm> {
 
   @override
   void dispose() {
+    // Bebaskan resource controller saat widget dihancurkan
     _nimController.dispose();
     _namaController.dispose();
     _jurusanController.dispose();
@@ -41,6 +50,7 @@ class BiodataForm_State extends State<BiodataForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // Judul dinamis berdasarkan mode tambah atau edit
         title: Text(widget.initial == null ? 'Tambah Mahasiswa' : 'Edit Mahasiswa'),
         centerTitle: true,
       ),
@@ -67,6 +77,7 @@ class BiodataForm_State extends State<BiodataForm> {
     );
   }
 
+  // Input untuk Nama mahasiswa (wajib diisi)
   Widget _textboxNama(){
     return TextFormField(
       decoration: const InputDecoration(labelText: 'Nama'),
@@ -76,6 +87,7 @@ class BiodataForm_State extends State<BiodataForm> {
     );
   }
 
+  // Input untuk NIM (unik dan wajib diisi)
   Widget _textboxNim(){
     return TextFormField(
       decoration: const InputDecoration(labelText: 'NIM'),
@@ -90,6 +102,7 @@ class BiodataForm_State extends State<BiodataForm> {
     );
   }
 
+  // Input untuk Jurusan (wajib diisi)
   Widget _textboxJurusan(){
     return TextFormField(
       decoration: const InputDecoration(labelText: 'Jurusan'),
@@ -99,6 +112,7 @@ class BiodataForm_State extends State<BiodataForm> {
     );
   }
 
+  // Pilihan gender menggunakan RadioListTile
   Widget _genderSelector() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,6 +142,7 @@ class BiodataForm_State extends State<BiodataForm> {
     );
   }
 
+  // Tombol untuk menyimpan/perbarui data dan mengembalikan Student ke halaman sebelumnya
   Widget _tombolSimpan(){
     return ElevatedButton(
       child: Text(widget.initial == null ? 'Simpan' : 'Perbarui'),
